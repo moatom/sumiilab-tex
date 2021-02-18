@@ -88,6 +88,20 @@
 \newlength{\slp@tpvsep}
 \setlength{\slp@tpvsep}{1.5\baselineskip}
 
+\renewenvironment{titlepage}
+{\if@twocolumn
+  \@restonecoltrue\onecolumn
+  \else
+  \@restonecolfalse\newpage
+  \fi
+  \thispagestyle{empty}%
+}%
+{\if@restonecol\twocolumn \else \newpage \fi
+  \if@twoside\else
+  \fi
+}
+ 
+
 %% titlepage
 \renewcommand{\maketitle}{%
   \begin{titlepage}%
@@ -116,7 +130,9 @@
       \vskip\slp@tpvsep
       \@date\\\@venue% date and venue
     }\end{center}
-  \end{titlepage}}
+  \end{titlepage}%
+  \setcounter{page}\tw@
+}
 
 %% \paragraphのスタイル
 \if@twocolumn
