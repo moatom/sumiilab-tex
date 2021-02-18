@@ -5,10 +5,10 @@
 \usepackage{bm}
 \usepackage{mathtools} % 数学記号
 \usepackage{cite} % 引用
-\usepackage{enumitem} %
+\usepackage{enumitem} % リスト環境
 \usepackage{bussproofs} % 証明器
 
-\usepackage{listings} % ソースコード
+\usepackage{listings, jvlisting} % ソースコード
 \usepackage{amsthm} % 定理環境
 
 %% =========================================
@@ -36,6 +36,8 @@
 \renewcommand{\proofname}{\bf{証明}}
 \numberwithin{definition}{chapter} % 定義1.1のように表示
 
+%% ソースコードのキャプション名
+\renewcommand{\lstlistingname}{ソースコード}
 %% ===============================================
 %% 論文の表紙に表示される情報
 %% ===============================================
@@ -105,14 +107,15 @@
 \begin{document}
 \maketitle
 
+\frontmatter% ここから前文
+
 \begin{abstract}
 ステキな論文の概要
 \end{abstract}
 
-%% 目次
-\tableofcontents
+\tableofcontents% 目次
 
-%% ここから本文
+\mainmatter% ここから本文
 
 \chapter{序論}
 
@@ -317,7 +320,9 @@ let rec listup_nodes = function
 
 \chapter{結論}
 
-\chapter*{謝辞}
+
+\backmatter% ここから後付
+\chapter{謝辞}
 
 ステキな論文の謝辞
 
@@ -325,4 +330,7 @@ let rec listup_nodes = function
 \bibliographystyle{jplain}
 \bibliography{refs}
 
+\appendix% ここから付録
+\chapter{ステキな付録}
+適当な付録。
 \end{document}
