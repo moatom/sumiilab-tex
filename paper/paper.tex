@@ -1,18 +1,48 @@
-\documentclass{sumiilab-paper}
-%% uplatex を使う場合：
-% \documentclass[uplatex]{sumiilab-paper}
-\usepackage{amsmath,amssymb,amsfonts,ascmac,cases,bm}
-\usepackage{cite}
-\usepackage{enumitem}
-\usepackage{bussproofs}
+\documentclass[uplatex]{sumiilab-paper}
+%% platex を使う場合：
+%% \documentclass{sumiilab-paper}
+\usepackage{amsmath,amssymb} % 数式
+\usepackage{bm}
+\usepackage{mathtools} % 数学記号
+\usepackage{cite} % 引用
+\usepackage{enumitem} %
+\usepackage{bussproofs} % 証明器
+
+\usepackage{listings} % ソースコード
+\usepackage{amsthm} % 定理環境
+
+%% =========================================
+%% 定理環境の設定
+%% =========================================
+\newtheoremstyle{mystyle}% name
+{}% space above
+{}% space below
+{\normalfont}% body font
+{}% indent amount
+{\bfseries}% theorem head font
+{ }% punctuation after theorem head
+{4pt}% space after theorem head (default: 5pt)
+{\thmname{#1}\thmnumber{#2}\thmnote{\hspace{2pt}(#3)}}% theorem head spec
+
+\theoremstyle{mystyle}
+\newtheorem{definition}{定義}
+\newtheorem{theorem}[definition]{定理}
+\newtheorem{corollary}[definition]{系}
+\newtheorem{proposition}[definition]{命題}
+\newtheorem{lemma}[definition]{補題}
+\newtheorem{example}[definition]{例}
+\newtheorem{assumption}[definition]{仮定}
+\newtheorem{axiom}[definition]{公理}
+\renewcommand{\proofname}{\bf{証明}}
+\numberwithin{definition}{chapter} % 定義1.1のように表示
 
 %% ===============================================
 %% 論文の表紙に表示される情報
 %% ===============================================
 
 % 論文の年度と種類
-\paper{平成 n 年度 卒業論文}% 学部生
-%\paper{平成 n 年度 修士論文}% 修士
+\paper{20XX 年度 卒業論文}% 学部生
+%\paper{20XX 年度 修士論文}% 修士
 
 % 論文のタイトル
 \title{住井研究室の\\ステキな論文クラスファイルの使用例}
@@ -29,7 +59,7 @@
 \subsupervisor{松田 一孝 准教授}% 論文指導教員(省略可)
 
 % 論文発表日時
-\date{平成 n 年1月1日 \quad 23:00--23:30}
+\date{20XX 年1月1日 \quad 23:00--23:30}
 % 発表場所
 \venue{電子情報システム・応物系1号館2階トイレ}
 
@@ -64,13 +94,13 @@
 %% TeX ソース中で \BOOL と書くと、\texttt{Bool} に置き換えてくれる。
 %% フォントを変え忘れたりするリスクが減るし、あとから記号を変更するのも楽になる。
 
-\newcommand{\keyword}[1]{\mathbf{#1}}
-\newcommand{\BOOL}{\keyword{Bool}}
-\newcommand{\TRUE}{\keyword{true}}
-\newcommand{\FALSE}{\keyword{false}}
-\newcommand{\IF}{\keyword{if}}
-\newcommand{\THEN}{\keyword{then}}
-\newcommand{\ELSE}{\keyword{else}}
+\newcommand{\bkeyword}[1]{\ensuremath{\mathbf{#1}}}
+\newcommand{\BOOL}{\bkeyword{Bool}}
+\newcommand{\TRUE}{\bkeyword{true}}
+\newcommand{\FALSE}{\bkeyword{false}}
+\newcommand{\IF}{\bkeyword{if}}
+\newcommand{\THEN}{\bkeyword{then}}
+\newcommand{\ELSE}{\bkeyword{else}}
 
 \begin{document}
 \maketitle
@@ -88,9 +118,9 @@
 
 %% 参考文献は \cite{ID} とします（ID は refs.bib 内で文献につけた識別子）
 %% BibTeX の使い方などは各自調べて下さい。
-序論とか本論とか結論とか \cite{Pierce:TypeSystems}
+序論とか結論とか \cite{Pierce:TypeSystems}
 
-\chapter{本論}
+\chapter{\TeX の簡単な使い方}
 
 \section{BNF の書き方の例}
 
@@ -105,28 +135,26 @@ array 環境は数式環境中で表のようなものを書くときに使う�
 %% 空白を明示的に開けるときは "\," "\ " "~" "\quad" "\qquad" などを使う。
 %% 空白の幅は "\qquad" > "\quad" > "~" = "\ " > "\," の順で大きい。
 %% "~" と "\ " は空白の代わりに改行を許すかどうかの違い（"\ " だと改行される可能性がある）
-\begin{array}{rl@{\qquad\qquad}r}
-  t ::=
-  & & \mbox{terms:} \\
-  & x & \mbox{variables} \\
-  & \lambda x.~t & \mbox{lambda abstraction} \\
-  & t_1~t_2 & \mbox{application} \\
-  & \TRUE & \mbox{true} \\
-  & \FALSE & \mbox{false} \\
-  & \IF~t_1~\THEN~t_2~\ELSE~t_3 & \mbox{if statement}
+\begin{array}{rcl@{\qquad\qquad}r}
+  t & \Coloneqq & & \text{terms:} \\
+  & \mid & x & \text{variables} \\
+  & \mid & \lambda x.~t & \text{lambda abstraction} \\
+  & \mid & t_1~t_2 & \text{application} \\
+  & \mid & \TRUE & \text{true} \\
+  & \mid & \FALSE & \text{false} \\
+  & \mid & \IF~t_1~\THEN~t_2~\ELSE~t_3 & \text{if statement}
 \end{array}
 \]
 
 他にも、次のように、align 環境を使っても、似たようなものを書くことができる。
 \begin{align}
-  t ::=
-  & \tag*{terms:} \\
-  & x \tag*{variables} \\
-  & \lambda x.~t \tag*{lambda abstraction} \\
-  & t_1~t_2 \tag*{application} \\
-  & \TRUE \tag*{true} \\
-  & \FALSE \tag*{false} \\
-  & \IF~t_1~\THEN~t_2~\ELSE~t_3 \tag*{if statement}
+  t \Coloneqq & \tag*{terms:} \\
+  {}\mid{} & x \tag*{variables} \\
+  {}\mid{} & \lambda x.~t \tag*{lambda abstraction} \\
+  {}\mid{} & t_1~t_2 \tag*{application} \\
+  {}\mid{} & \TRUE \tag*{true} \\
+  {}\mid{} & \FALSE \tag*{false} \\
+  {}\mid{} & \IF~t_1~\THEN~t_2~\ELSE~t_3 \tag*{if statement}
 \end{align}
 array 環境を愚直に使う場合と比べて、式が中央揃えになるという点と、
 ``variables'' とかの説明が右端に来ている点が違う。
@@ -137,14 +165,13 @@ array 環境を愚直に使う場合と比べて、式が中央揃えになる�
 BNF 全体を左揃えにしたいならば、次のように、flalign 環境を使うと良い。
 align 環境と違って、\verb|&| を余分に1つ付ける必要がある、ということに注意して欲しい（詳しくはソースコードを見よ）。
 \begin{flalign}
-  t ::=
-  & & \tag*{terms:} \\ % & を余分に1つ付けること！
-  & x \tag*{variables} \\
-  & \lambda x.~t \tag*{lambda abstraction} \\
-  & t_1~t_2 \tag*{application} \\
-  & \TRUE \tag*{true} \\
-  & \FALSE \tag*{false} \\
-  & \IF~t_1~\THEN~t_2~\ELSE~t_3 \tag*{if statement}
+  t \Coloneqq & & \tag*{terms:} \\ % & を余分に1つ付けること！
+  {}\mid{} & x \tag*{variables} \\
+  {}\mid{} & \lambda x.~t \tag*{lambda abstraction} \\
+  {}\mid{} & t_1~t_2 \tag*{application} \\
+  {}\mid{} & \TRUE \tag*{true} \\
+  {}\mid{} & \FALSE \tag*{false} \\
+  {}\mid{} & \IF~t_1~\THEN~t_2~\ELSE~t_3 \tag*{if statement}
 \end{flalign}
 
 \section{導出木の書き方の例}
@@ -157,13 +184,13 @@ bussproofs.sty はこれらとは全く異なるインタフェースであり�
 bussproofs.sty の動作は、（導出木を要素とする）スタックをイメージすると解りやすい。
 よく使うマクロは次の通り。
 \begin{itemize}
-\item \lstinline|\AxiomC{...}|：Axiom を push する（導出木では葉に相当）
-\item \lstinline|\UnaryInfC{...}|：スタックから部分導出木（仮定）を1つ pop して、
+\item \verb|\AxiomC{...}|：Axiom を push する（導出木では葉に相当）
+\item \verb|\UnaryInfC{...}|：スタックから部分導出木（仮定）を1つ pop して、
   それを新たに作ったノード（結論）の子供にすることで、新たな部分導出木を作成し、push する。
-\item \lstinline|\BinaryInfC{...}|：スタックから部分導出木（仮定）を2つ pop して、
-  \lstinline|\UnaryInfC| と同様の動作を行う。
-\item \lstinline|\TrinaryInfC{...}|：スタックから部分導出木（仮定）を3つ pop して、
-  \lstinline|\UnaryInfC| と同様の動作を行う。
+\item \verb|\BinaryInfC{...}|：スタックから部分導出木（仮定）を2つ pop して、
+  \verb|\UnaryInfC| と同様の動作を行う。
+\item \verb|\TrinaryInfC{...}|：スタックから部分導出木（仮定）を3つ pop して、
+  \verb|\UnaryInfC| と同様の動作を行う。
 \end{itemize}
 
 実際の使い方は以下の通り。
@@ -205,7 +232,7 @@ bussproofs.sty の動作は、（導出木を要素とする）スタックを�
 
 \section{定理環境}
 
-この論文クラスファイルでは、デフォルトで以下の定理環境を提供している。
+amsthm.styをカスタマイズした定理環境を使う。
 
 \begin{theorem}[定理のタイトル]
   定理の内容
@@ -239,13 +266,9 @@ bussproofs.sty の動作は、（導出木を要素とする）スタックを�
   公理の内容
 \end{axiom}
 
-\begin{proof}[証明のタイトル]
-  証明の内容 \qed
+\begin{proof}
+  証明の内容
 \end{proof}
-
-\begin{proof*}[証明のタイトル]
-  証明の内容（番号なしの証明環境。証明を \lstinline|\ref| で参照する必要がないなら、こっちを使うほうが自然かも） \qed
-\end{proof*}
 
 \subsection{定理環境の使い方の例}
 
@@ -255,9 +278,9 @@ bussproofs.sty の動作は、（導出木を要素とする）スタックを�
   補題や定理から直ちに導けるような軽い命題は系 (corollary) にする（細かい使い分けは人による）。
 \end{lemma}
 
-\begin{proof*}
+\begin{proof}
   \lstinline|proof*| のように、アスタリスク付きの環境では、番号が付かない。
-\end{proof*}
+\end{proof}
 
 \begin{theorem}
   \label{thm:wonderful-theorem}
@@ -265,7 +288,7 @@ bussproofs.sty の動作は、（導出木を要素とする）スタックを�
   読者の心をくすぐる興味深いステートメントを書こう。
 \end{theorem}
 
-\begin{proof*}
+\begin{proof}
   定理 \ref{thm:wonderful-theorem} の華麗な証明。その美しい証明に、読者の目は釘付けだ！
   \begin{enumerate}[leftmargin=0pt,itemindent=*,label=Case \arabic*.]
   \item 自明
@@ -277,7 +300,7 @@ bussproofs.sty の動作は、（導出木を要素とする）スタックを�
     \item ほらね、こんなに簡単
     \end{enumerate}
   \end{enumerate}
-\end{proof*}
+\end{proof}
 
 \section{ソースコード}
 
@@ -291,7 +314,6 @@ let rec listup_nodes = function
   | Leaf x -> [x]
   | Node (r, l) -> (listup_nodes r) @ (listup_nodes l)
 \end{lstlisting}
-ソースコードの書き方等については slide ブランチの slide.tex を参照されたし。
 
 \chapter{結論}
 
@@ -300,7 +322,7 @@ let rec listup_nodes = function
 ステキな論文の謝辞
 
 %% 参考文献: bibtex
-\bibliographystyle{junsrt}
+\bibliographystyle{jplain}
 \bibliography{refs}
 
 \end{document}
