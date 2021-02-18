@@ -1,13 +1,15 @@
 \documentclass[uplatex]{sumiilab-paper}
-%% uplatex を使う場合：
-% \documentclass[uplatex]{sumiilab-paper}
-\usepackage{amsmath,amssymb,amsfonts,ascmac,cases,bm}
-\usepackage{cite}
-\usepackage{enumitem}
-\usepackage{bussproofs}
+%% platex を使う場合：
+%% \documentclass{sumiilab-paper}
+\usepackage{amsmath,amssymb} % 数式
+\usepackage{bm}
+\usepackage{mathtools} % 数学記号
+\usepackage{cite} % 引用
+\usepackage{enumitem} %
+\usepackage{bussproofs} % 証明器
 
-\usepackage{listings}
-\usepackage{amsthm}
+\usepackage{listings} % ソースコード
+\usepackage{amsthm} % 定理環境
 
 %% =========================================
 %% 定理環境の設定
@@ -92,13 +94,13 @@
 %% TeX ソース中で \BOOL と書くと、\texttt{Bool} に置き換えてくれる。
 %% フォントを変え忘れたりするリスクが減るし、あとから記号を変更するのも楽になる。
 
-\newcommand{\keyword}[1]{\mathbf{#1}}
-\newcommand{\BOOL}{\keyword{Bool}}
-\newcommand{\TRUE}{\keyword{true}}
-\newcommand{\FALSE}{\keyword{false}}
-\newcommand{\IF}{\keyword{if}}
-\newcommand{\THEN}{\keyword{then}}
-\newcommand{\ELSE}{\keyword{else}}
+\newcommand{\bkeyword}[1]{\ensuremath{\mathbf{#1}}}
+\newcommand{\BOOL}{\bkeyword{Bool}}
+\newcommand{\TRUE}{\bkeyword{true}}
+\newcommand{\FALSE}{\bkeyword{false}}
+\newcommand{\IF}{\bkeyword{if}}
+\newcommand{\THEN}{\bkeyword{then}}
+\newcommand{\ELSE}{\bkeyword{else}}
 
 \begin{document}
 \maketitle
@@ -134,26 +136,25 @@ array 環境は数式環境中で表のようなものを書くときに使う�
 %% 空白の幅は "\qquad" > "\quad" > "~" = "\ " > "\," の順で大きい。
 %% "~" と "\ " は空白の代わりに改行を許すかどうかの違い（"\ " だと改行される可能性がある）
 \begin{array}{rcl@{\qquad\qquad}r}
-  t & ::= & & \text{terms:} \\
-  &\mid & x & \text{variables} \\
-  &\mid & \lambda x.~t & \text{lambda abstraction} \\
-  &\mid & t_1~t_2 & \text{application} \\
-  &\mid & \TRUE & \text{true} \\
-  &\mid & \FALSE & \text{false} \\
-  &\mid & \IF~t_1~\THEN~t_2~\ELSE~t_3 & \text{if statement}
+  t & \Coloneqq & & \text{terms:} \\
+  & \mid & x & \text{variables} \\
+  & \mid & \lambda x.~t & \text{lambda abstraction} \\
+  & \mid & t_1~t_2 & \text{application} \\
+  & \mid & \TRUE & \text{true} \\
+  & \mid & \FALSE & \text{false} \\
+  & \mid & \IF~t_1~\THEN~t_2~\ELSE~t_3 & \text{if statement}
 \end{array}
 \]
 
 他にも、次のように、align 環境を使っても、似たようなものを書くことができる。
 \begin{align}
-  t ::=
-  & \tag*{terms:} \\
-  & x \tag*{variables} \\
-  & \lambda x.~t \tag*{lambda abstraction} \\
-  & t_1~t_2 \tag*{application} \\
-  & \TRUE \tag*{true} \\
-  & \FALSE \tag*{false} \\
-  & \IF~t_1~\THEN~t_2~\ELSE~t_3 \tag*{if statement}
+  t \Coloneqq & \tag*{terms:} \\
+  {}\mid{} & x \tag*{variables} \\
+  {}\mid{} & \lambda x.~t \tag*{lambda abstraction} \\
+  {}\mid{} & t_1~t_2 \tag*{application} \\
+  {}\mid{} & \TRUE \tag*{true} \\
+  {}\mid{} & \FALSE \tag*{false} \\
+  {}\mid{} & \IF~t_1~\THEN~t_2~\ELSE~t_3 \tag*{if statement}
 \end{align}
 array 環境を愚直に使う場合と比べて、式が中央揃えになるという点と、
 ``variables'' とかの説明が右端に来ている点が違う。
@@ -164,14 +165,13 @@ array 環境を愚直に使う場合と比べて、式が中央揃えになる�
 BNF 全体を左揃えにしたいならば、次のように、flalign 環境を使うと良い。
 align 環境と違って、\verb|&| を余分に1つ付ける必要がある、ということに注意して欲しい（詳しくはソースコードを見よ）。
 \begin{flalign}
-  t ::=
-  & & \tag*{terms:} \\ % & を余分に1つ付けること！
-  & x \tag*{variables} \\
-  & \lambda x.~t \tag*{lambda abstraction} \\
-  & t_1~t_2 \tag*{application} \\
-  & \TRUE \tag*{true} \\
-  & \FALSE \tag*{false} \\
-  & \IF~t_1~\THEN~t_2~\ELSE~t_3 \tag*{if statement}
+  t \Coloneqq & & \tag*{terms:} \\ % & を余分に1つ付けること！
+  {}\mid{} & x \tag*{variables} \\
+  {}\mid{} & \lambda x.~t \tag*{lambda abstraction} \\
+  {}\mid{} & t_1~t_2 \tag*{application} \\
+  {}\mid{} & \TRUE \tag*{true} \\
+  {}\mid{} & \FALSE \tag*{false} \\
+  {}\mid{} & \IF~t_1~\THEN~t_2~\ELSE~t_3 \tag*{if statement}
 \end{flalign}
 
 \section{導出木の書き方の例}
@@ -184,13 +184,13 @@ bussproofs.sty はこれらとは全く異なるインタフェースであり�
 bussproofs.sty の動作は、（導出木を要素とする）スタックをイメージすると解りやすい。
 よく使うマクロは次の通り。
 \begin{itemize}
-\item \lstinline|\AxiomC{...}|：Axiom を push する（導出木では葉に相当）
-\item \lstinline|\UnaryInfC{...}|：スタックから部分導出木（仮定）を1つ pop して、
+\item \verb|\AxiomC{...}|：Axiom を push する（導出木では葉に相当）
+\item \verb|\UnaryInfC{...}|：スタックから部分導出木（仮定）を1つ pop して、
   それを新たに作ったノード（結論）の子供にすることで、新たな部分導出木を作成し、push する。
-\item \lstinline|\BinaryInfC{...}|：スタックから部分導出木（仮定）を2つ pop して、
-  \lstinline|\UnaryInfC| と同様の動作を行う。
-\item \lstinline|\TrinaryInfC{...}|：スタックから部分導出木（仮定）を3つ pop して、
-  \lstinline|\UnaryInfC| と同様の動作を行う。
+\item \verb|\BinaryInfC{...}|：スタックから部分導出木（仮定）を2つ pop して、
+  \verb|\UnaryInfC| と同様の動作を行う。
+\item \verb|\TrinaryInfC{...}|：スタックから部分導出木（仮定）を3つ pop して、
+  \verb|\UnaryInfC| と同様の動作を行う。
 \end{itemize}
 
 実際の使い方は以下の通り。
@@ -232,7 +232,7 @@ bussproofs.sty の動作は、（導出木を要素とする）スタックを�
 
 \section{定理環境}
 
-この論文クラスファイルでは、デフォルトで以下の定理環境を提供している。
+amsthm.styをカスタマイズした定理環境を使う。
 
 \begin{theorem}[定理のタイトル]
   定理の内容
@@ -269,14 +269,6 @@ bussproofs.sty の動作は、（導出木を要素とする）スタックを�
 \begin{proof}
   証明の内容
 \end{proof}
-
-%% \begin{proof}[証明のタイトル]
-%%   証明の内容（番号なしの証明環境。証明を \lstinline|\ref| で参照する必要がないなら、こっちを使うほうが自然かも） \qed
-%% \end{proof}
-
-%% \begin{proof*}[証明のタイトル]
-%%   証明の内容（番号なしの証明環境。証明を \lstinline|\ref| で参照する必要がないなら、こっちを使うほうが自然かも） \qed
-%% \end{proof*}
 
 \subsection{定理環境の使い方の例}
 
@@ -322,7 +314,6 @@ let rec listup_nodes = function
   | Leaf x -> [x]
   | Node (r, l) -> (listup_nodes r) @ (listup_nodes l)
 \end{lstlisting}
-ソースコードの書き方等については slide ブランチの slide.tex を参照されたし。
 
 \chapter{結論}
 
