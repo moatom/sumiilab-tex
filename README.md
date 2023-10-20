@@ -1,5 +1,11 @@
 # 住井・松田研究室のステキな TeX ファイルたち
 
+##biblopgraphy
+- https://github.com/yallop/effects-bibliography
+- https://github.com/metaocaml/metaocaml-bibliography
+
+---
+
 [東北大学 住井・松田研究室](http://www.sf.ecei.tohoku.ac.jp/)
 （工学部 電気情報物理工学科、大学院 情報科学研究科）
 で使うかもしれない便利な LaTeX ファイルを公開しています。
